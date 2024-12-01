@@ -36,11 +36,12 @@ const MAP = [
 ];
 
 let SETTINGS = {
-    'DATE': D[0],
-    'CONFETTI': C[0],
-    'VERSION': '0.1',
+    DATE: D[0],
+    CONFETTI: C[0],
+    VERSION: '0.1',
 };
 
+const $range = document.querySelector('.range');
 const $figure = document.querySelector('.figure');
 const $percent = document.querySelector('.percent');
 
@@ -119,54 +120,54 @@ document.addEventListener('run', function (event) {
 
     SETTINGS = s;
 
-    const dt = new Date(SETTINGS.DATE);
+    const dt = moment(SETTINGS.DATE);
+    const dtStr = dt.format('YYYY-MM-DD');
 
-    const dtEnd = new Date(dt);
-    dtEnd.setDate(dtEnd.getDate() + 365);
+    const dtEnd = dt.clone().add(365, 'd').endOf('day');
+    const dtEndStr = dtEnd.format('YYYY-MM-DD');
 
-    const dtStr = `${dt.getDate()}.${dt.getMonth() + 1}.${dt.getFullYear()}`;
-    const dtEndStr = `${dtEnd.getDate()}.${dtEnd.getMonth() + 1}.${dtEnd.getFullYear()}`;
-
-    document.querySelector('.range').innerText = `${dtStr} / ${dtEndStr}`;
+    $range.innerText = `${dtStr} / ${dtEndStr}`;
+    $figure.innerHTML = '';
 
     $selectD.value = SETTINGS.DATE;
     $selectC.value = SETTINGS.CONFETTI;
 
-    $figure.innerHTML = '';
+    /**
+     * 
+     */
+    let dtMap = [];
 
+    for (let i = 0; i < 365; i++) {
+        const dateTime = moment(SETTINGS.DATE).add(i, 'd');
+        const dateTimeEnd = moment(SETTINGS.DATE).add(i, 'd').endOf('day');
+
+        dtMap.push([dateTime, dateTimeEnd]);
+    }
+
+    dtMap = dtMap.reverse();
+
+    /**
+     * 
+     */
     let counter = 0;
 
     MAP.forEach(r => {
         r.split('').forEach(c => {
-            const $FRAGMENT = $figure.appendChild(document.createElement('div'));
-            $FRAGMENT.dataset.counter = (counter + 1);
-            $FRAGMENT.classList.add('figure__fragment');
+            const $fragment = $figure.appendChild(document.createElement('div'));
+            $fragment.dataset.counter = (counter + 1);
+            $fragment.classList.add('figure__fragment');
 
             if (c === '0') {
-                $FRAGMENT.classList.add('--hidden');
+                $fragment.classList.add('--hidden');
             } else {
-                const dt_1 = new Date(dt);
-                dt_1.setDate(dt.getDate() + (364 - counter));
-                dt_1.setHours(0);
-                dt_1.setMinutes(0);
-                dt_1.setSeconds(0);
-                dt_1.setMilliseconds(0);
-
-                const dt_2 = new Date(dt);
-                dt_2.setDate(dt.getDate() + (364 - counter));
-                dt_2.setHours(23);
-                dt_2.setMinutes(59);
-                dt_2.setSeconds(59);
-                dt_2.setMilliseconds(59);
-
-                const percent = calculatePercentageFilled(dt_1, dt_2);
+                const percent = calculatePercentageFilled(dtMap[counter][0].toDate(), dtMap[counter][1].toDate());
 
                 if (percent > 0) {
-                    $FRAGMENT.classList.add('--progress');
-                    $FRAGMENT.style.setProperty('--progress', `${percent}%`);
+                    $fragment.classList.add('--progress');
+                    $fragment.style.setProperty('--progress', `${percent}%`);
 
                     if (percent >= 80) {
-                        $FRAGMENT.classList.add('--active');
+                        $fragment.classList.add('--active');
                     }
                 }
 
@@ -194,12 +195,10 @@ function calculatePercentageFilled(date1, date2) {
 }
 
 (function frame() {
-    const dt = new Date(SETTINGS.DATE);
+    const dt = moment(SETTINGS.DATE);
+    const dtEnd = dt.clone().add(365, 'd').endOf('day');
 
-    const dtEnd = new Date(dt);
-    dtEnd.setDate(dtEnd.getDate() + 365);
-
-    $percent.innerText = `${calculatePercentageFilled(dt, dtEnd).toFixed(7)}%`;
+    $percent.innerText = `${calculatePercentageFilled(dt.toDate(), dtEnd.toDate()).toFixed(7)}%`;
 
     function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
