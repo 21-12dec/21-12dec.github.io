@@ -1,0 +1,136 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-size: 16px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.name {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 8px;
+    font-size: 24px;
+}
+
+.name > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 4px;
+}
+
+.name > div > img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.h {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.m {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 15px;
+}
+
+.nav__item {
+    cursor: pointer;
+    padding: 8px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+    box-shadow: none;
+    background-color: #f8fafc;
+}
+
+.nav__item.--active {
+    color: #b91c1c;
+    font-weight: 700;
+    border-color: #b91c1c;
+    background-color: rgba(220, 38, 38, 0.15);
+}
+
+.figure {
+    display: grid;
+    grid-template-columns: repeat(23, min(4vw, 40px));
+    grid-gap: 2px;
+}
+
+.figure__fragment {
+    width: min(4vw, 40px);
+    height: min(3vw, 30px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: min(1vw, 10px);
+    font-weight: 500;
+    color: #0f172a;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+    background-color: #f1f5f9;
+    position: relative;
+}
+
+.figure__fragment::after {
+    content: attr(data-counter);
+    z-index: 10;
+}
+
+.figure__fragment.--active {
+    color: #fef2f2;
+}
+
+.figure__fragment.--hidden {
+    opacity: 0;
+}
+
+.figure__fragment.--progress::before {
+    content: '';
+    width: var(--progress);
+    height: 100%;
+    display: block;
+    margin-left: calc(100% - var(--progress));
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #991b1b;
+    border-radius: 2px;
+    background-color: #dc2626;
+}
