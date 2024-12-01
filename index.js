@@ -98,4 +98,4 @@ $NAV.querySelectorAll('.nav__item[data-dt]').forEach(element => {
     });
 });
 
-$NAV.querySelectorAll('.nav__item[data-dt]')[0].click();
+$NAV.querySelectorAll('.nav__item[data-dt]')[1].click();
