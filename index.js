@@ -193,7 +193,7 @@ function calculatePercentageFilled(date1, date2) {
     }
 }
 
-(function percent() {
+(function frame() {
     const dt = new Date(SETTINGS.DATE);
 
     const dtEnd = new Date(dt);
@@ -201,11 +201,6 @@ function calculatePercentageFilled(date1, date2) {
 
     $percent.innerText = `${calculatePercentageFilled(dt, dtEnd).toFixed(7)}%`;
 
-    requestAnimationFrame(percent);
-})();
-
-
-(function frame() {
     function randomInRange(min, max) {
         return Math.random() * (max - min) + min;
     }
